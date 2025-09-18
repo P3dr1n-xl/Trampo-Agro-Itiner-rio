@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroMonitor - Solução para Agricultores</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #4caf50;
+            --primary-dark: #1b5e20;
+            --secondary: #ffa000;
+            --secondary-light: #ffb300;
+            --secondary-dark: #ff6f00;
+            --text: #212121;
+            --text-light: #757575;
+            --background: #f5f5f5;
+            --card-bg: #ffffff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --info: #2196f3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav a:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://i.ibb.co/SDffVTCn/Foto-Agro-Monitor.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-dark);
+        }
+        
+        .features {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+        
+        .dashboard {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .sensor-card {
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .sensor-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        
+        .sensor-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-good {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+        
+        .status-warning {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-danger {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger);
+        }
+        
+        .weather-forecast {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .weather-card {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .weather-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--info);
+        }
+        
+        .recommendations {
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .recommendations h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .recommendation-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--secondary);
+        }
+        
+        .app-download {
+            background-color: var(--primary-light);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .app-download h2 {
+            margin-bottom: 1.5rem;
+        }
+        
+        .app-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .app-btn {
+            background-color: white;
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .app-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text">AgroMonitor</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Funcionalidades</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#app">Aplicativo</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Monitoramento Climático Inteligente para Agricultores</h1>
+            <p>Sensores no solo + aplicativo no celular. Informa umidade, necessidade de irrigação e previsão do tempo. Sugere o momento ideal de plantio ou colheita.</p>
+            <a href="#dashboard" class="btn">Ver Meu Dashboard</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Como Funciona</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Monitoramento do Solo</h3>
+                    <p>Sensores instalados no campo monitoram em tempo real a umidade do solo e as condições de cultivo.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌤️</div>
+                    <h3>Previsão do Tempo</h3>
+                    <p>Previsões meteorológicas precisas ajudam a planejar as atividades agrícolas com antecedência.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💧</div>
+                    <h3>Gestão de Irrigação</h3>
+                    <p>Recomendações inteligentes sobre quando e quanto irrigar, economizando água e recursos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Momento Ideal</h3>
+                    <p>Alertas sobre o melhor momento para plantar, cuidar e colher cada tipo de cultura.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard">
+        <div class="container">
+            <h2 class="section-title">Dashboard de Monitoramento</h2>
+            
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h3>Fazenda São João - Cultura: Milho</h3>
+                    <span id="last-update">Última atualização: <span id="update-time">carregando...</span></span>
+                </div>
+                
+                <div class="sensor-grid">
+                    <div class="sensor-card">
+                        <h4>Umidade do Solo</h4>
+                        <div class="sensor-value" id="soil-moisture">--%</div>
+                        <span class="sensor-status status-good" id="moisture-status">Ótimo</span>
+                    </div>
+                    <div class="sensor-card">
+                        <h4>Temperatura do Solo</h4>
+                        <div class="sensor-value" id="soil-temperature">--°C</div>
+                        <span class="sensor-status status-good" id="temperature-status">Ideal</span>
+                    </div>
+                    <div class="sensor-card">
+                        <h4>Ph do Solo</h4>
+                        <div class="sensor-value" id="soil-ph">--</div>
+                        <span class="sensor-status status-warning" id="ph-status">Atenção</span>
+                    </div>
+                    <div class="sensor-card">
+                        <h4>Luminosidade</h4>
+                        <div class="sensor-value" id="light-intensity">-- lux</div>
+                        <span class="sensor-status status-good" id="light-status">Boa</span>
+                    </div>
+                </div>
+                
+                <h3>Previsão do Tempo - Próximos 5 Dias</h3>
+                <div class="weather-forecast" id="weather-forecast">
+                    <!-- Previsão será preenchida via JavaScript -->
+                </div>
+                
+                <div class="recommendations">
+                    <h3>Recomendações para Hoje</h3>
+                    <div class="recommendation-item">
+                        <span class="recommendation-icon">💧</span>
+                        <p>Irrigação não necessária hoje. O solo está com umidade adequada.</p>
+                    </div>
+                    <div class="recommendation-item">
+                        <span class="recommendation-icon">📅</span>
+                        <p>Período ideal para aplicar fertilizante nitrogenado nas próximas 48h.</p>
+                    </div>
+                    <div class="recommendation-item">
+                        <span class="recommendation-icon">⚠️</span>
+                        <p>Previsão de chuva para quinta-feira. Planeje colheita para sexta-feira.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="app-download" id="app">
+        <div class="container">
+            <h2>Baixe Nosso Aplicativo</h2>
+            <p>Monitore sua plantação de qualquer lugar receba alertas importantes em tempo real</p>
+            
+            <div class="app-buttons">
+                <a href="#" class="app-btn">
+                    <span>📱</span>
+                    Google Play
+                </a>
+                <a href="#" class="app-btn">
+                    <span>📱</span>
+                    App Store
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container footer-content">
+            <p>AgroMonitor - Soluções Inteligentes para Agricultura</p>
+            <p>Contato: contato@agromonitor.com.br | (44) 3456-7890</p>
+            <p>© 2025 AgroMonitor. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Atualizar horário da última atualização
+            function updateTime() {
+                const now = new Date();
+                const formattedTime = now.toLocaleTimeString('pt-BR');
+                document.getElementById('update-time').textContent = formattedTime;
+            }
+            
+            updateTime();
+            setInterval(updateTime, 60000); // Atualiza a cada minuto
+            
+            // Simular dados dos sensores
+            function simulateSensorData() {
+                // Umidade do solo (30-70% é ideal para a maioria das culturas)
+                const moisture = Math.floor(Math.random() * 30) + 40;
+                document.getElementById('soil-moisture').textContent = `${moisture}%`;
+                
+                if (moisture < 35) {
+                    document.getElementById('moisture-status').textContent = 'Baixa';
+                    document.getElementById('moisture-status').className = 'sensor-status status-danger';
+                } else if (moisture > 65) {
+                    document.getElementById('moisture-status').textContent = 'Alta';
+                    document.getElementById('moisture-status').className = 'sensor-status status-warning';
+                } else {
+                    document.getElementById('moisture-status').textContent = 'Ótimo';
+                    document.getElementById('moisture-status').className = 'sensor-status status-good';
+                }
+                
+                // Temperatura do solo (15-30°C é ideal para a maioria das culturas)
+                const temperature = (Math.random() * 10) + 20;
+                document.getElementById('soil-temperature').textContent = `${temperature.toFixed(1)}°C`;
+                
+                if (temperature < 15 || temperature > 30) {
+                    document.getElementById('temperature-status').textContent = 'Fora do ideal';
+                    document.getElementById('temperature-status').className = 'sensor-status status-warning';
+                } else {
+                    document.getElementById('temperature-status').textContent = 'Ideal';
+                    document.getElementById('temperature-status').className = 'sensor-status status-good';
+                }
+                
+                // PH do solo (6.0-7.0 é ideal para a maioria das culturas)
+                const ph = (Math.random() * 1.5) + 5.8;
+                document.getElementById('soil-ph').textContent = ph.toFixed(1);
+                
+                if (ph < 6.0 || ph > 7.0) {
+                    document.getElementById('ph-status').textContent = 'Ajuste necessário';
+                    document.getElementById('ph-status').className = 'sensor-status status-warning';
+                } else {
+                    document.getElementById('ph-status').textContent = 'Ideal';
+                    document.getElementById('ph-status').className = 'sensor-status status-good';
+                }
+                
+                // Luminosidade
+                const light = Math.floor(Math.random() * 10000) + 5000;
+                document.getElementById('light-intensity').textContent = `${light} lux`;
+                
+                if (light < 7000) {
+                    document.getElementById('light-status').textContent = 'Baixa';
+                    document.getElementById('light-status').className = 'sensor-status status-warning';
+                } else {
+                    document.getElementById('light-status').textContent = 'Boa';
+                    document.getElementById('light-status').className = 'sensor-status status-good';
+                }
+            }
+            
+            simulateSensorData();
+            setInterval(simulateSensorData, 30000); // Atualiza a cada 30 segundos
+            
+            // Simular previsão do tempo
+            function generateWeatherForecast() {
+                const weatherContainer = document.getElementById('weather-forecast');
+                weatherContainer.innerHTML = '';
+                
+                const days = ['Hoje', 'Amanhã', 'Quarta', 'Quinta', 'Sexta'];
+                const weatherTypes = [
+                    { icon: '☀️', desc: 'Ensolarado', temp: '28°C' },
+                    { icon: '⛅', desc: 'Parcialmente nublado', temp: '26°C' },
+                    { icon: '🌧️', desc: 'Chuvoso', temp: '22°C' },
+                    { icon: '🌦️', desc: 'Chuva com sol', temp: '24°C' },
+                    { icon: '☀️', desc: 'Ensolarado', temp: '30°C' }
+                ];
+                
+                days.forEach((day, index) => {
+                    const weather = weatherTypes[index];
+                    
+                    const weatherCard = document.createElement('div');
+                    weatherCard.className = 'weather-card';
+                    
+                    weatherCard.innerHTML = `
+                        <div class="weather-icon">${weather.icon}</div>
+                        <h4>${day}</h4>
+                        <p>${weather.desc}</p>
+                        <p><strong>${weather.temp}</strong></p>
+                    `;
+                    
+                    weatherContainer.appendChild(weatherCard);
+                });
+            }
+            
+            generateWeatherForecast();
+        });
+    </script>
+</body>
+</html>
